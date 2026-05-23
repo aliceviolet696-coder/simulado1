@@ -6,6 +6,8 @@ let tasaInteres = 15;
 
 let clienteSeleccionado = null;
 
+let clienteCredito = null;
+
 
 
 //====================================
@@ -263,40 +265,19 @@ function seleccionarCliente(cedula){
     clienteSeleccionado = cliente;
 
 
-    mostrarTextoEnCaja(
-        "txtCedula",
-        cliente.cedula
-    );
+    mostrarTextoEnCaja("txtCedula", cliente.cedula);
 
-    mostrarTextoEnCaja(
-        "txtNombre",
-        cliente.nombre
-    );
+    mostrarTextoEnCaja("txtNombre", cliente.nombre);
 
-    mostrarTextoEnCaja(
-        "txtApellido",
-        cliente.apellido
-    );
+    mostrarTextoEnCaja("txtApellido", cliente.apellido);
 
-    mostrarTextoEnCaja(
-        "txtTelefono",
-        cliente.telefono
-    );
+    mostrarTextoEnCaja("txtTelefono", cliente.telefono);
 
-    mostrarTextoEnCaja(
-        "txtCorreo",
-        cliente.correo
-    );
+    mostrarTextoEnCaja("txtCorreo", cliente.correo);
 
-    mostrarTextoEnCaja(
-        "txtIngresos",
-        cliente.ingresos
-    );
+    mostrarTextoEnCaja("txtIngresos", cliente.ingresos);
 
-    mostrarTextoEnCaja(
-        "txtEgresos",
-        cliente.egresos
-    );
+    mostrarTextoEnCaja("txtEgresos", cliente.egresos);
 
 }
 
@@ -390,5 +371,159 @@ function creditoVIP(){
 
 
     alert("Crédito VIP agregado correctamente");
+
+}
+
+
+
+//====================================
+// BUSCAR CLIENTE CREDITO
+//====================================
+
+function buscarClienteCredito(){
+
+    let cedula;
+
+    cedula = recuperaraTexto("buscarCedulaCredito");
+
+
+    let cliente;
+
+    cliente = buscarCliente(cedula);
+
+
+    let componente;
+
+    componente = document.getElementById("datosClienteCredito");
+
+
+    if(cliente == null){
+
+        componente.innerHTML =
+        `
+        <h3>Cliente no encontrado</h3>
+        `;
+
+        clienteCredito = null;
+
+    }else{
+
+        clienteCredito = cliente;
+
+        componente.innerHTML =
+        `
+        <h3>Datos del Cliente</h3>
+
+        <p><strong>Cédula:</strong> ${cliente.cedula}</p>
+
+        <p><strong>Nombre:</strong> ${cliente.nombre}</p>
+
+        <p><strong>Apellido:</strong> ${cliente.apellido}</p>
+
+        <p><strong>Teléfono:</strong> ${cliente.telefono}</p>
+
+        <p><strong>Correo:</strong> ${cliente.correo}</p>
+
+        <p><strong>Ingresos:</strong> $${cliente.ingresos}</p>
+
+        <p><strong>Egresos:</strong> $${cliente.egresos}</p>
+        `;
+    }
+
+}
+
+
+
+//====================================
+// CALCULAR CREDITO
+//====================================
+
+function calcularCredito(){
+
+    if(clienteCredito == null){
+
+        alert("Primero debe buscar un cliente");
+
+        return;
+
+    }
+
+
+    let monto;
+
+    let plazo;
+
+    monto = recuperarFloat("montoCredito");
+
+    plazo = recuperarInt("plazoCredito");
+
+
+    let capacidadPago;
+
+    capacidadPago =
+    clienteCredito.ingresos
+    - clienteCredito.egresos;
+
+
+    let interes;
+
+    interes =
+    monto * (tasaInteres / 100);
+
+
+    let totalPagar;
+
+    totalPagar =
+    monto + interes;
+
+
+    let cuotaMensual;
+
+    cuotaMensual =
+    totalPagar / plazo;
+
+
+    let resultado;
+
+    let componenteResultado;
+
+    componenteResultado =
+    document.getElementById("resultadoCredito");
+
+
+    if(cuotaMensual <= capacidadPago){
+
+        resultado = "APROBADO";
+
+        componenteResultado.className = "aprobado";
+
+    }else{
+
+        resultado = "RECHAZADO";
+
+        componenteResultado.className = "rechazado";
+
+    }
+
+
+    componenteResultado.innerHTML =
+    `
+    <h3>Resultado del Crédito</h3>
+
+    Capacidad de pago:
+    $${capacidadPago}
+    <br><br>
+
+    Total a pagar:
+    $${totalPagar.toFixed(2)}
+    <br><br>
+
+    Cuota mensual:
+    $${cuotaMensual.toFixed(2)}
+    <br><br>
+
+    RESULTADO:
+    ${resultado}
+    `;
 
 }

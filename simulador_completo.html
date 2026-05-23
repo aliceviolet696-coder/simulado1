@@ -2,18 +2,20 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
 
-  <title>Sistema de Créditos</title>
+    <meta charset="UTF-8">
 
-  <link rel="stylesheet" href="simulador_completo.css">
+    <title>Sistema de Créditos</title>
+
+    <link rel="stylesheet" href="simulador_completo.css">
+
 </head>
 
 <body>
 
 <header>
 
-  <h1>Sistema Básico de Créditos</h1>
+    <h1>Sistema Básico de Créditos</h1>
 
 </header>
 
@@ -23,25 +25,25 @@
 
 <nav>
 
-  <button onclick="mostrarSeccion('parametros')">
-    Parámetros
-  </button>
+    <button onclick="mostrarSeccion('parametros')">
+        Parámetros
+    </button>
 
-  <button onclick="mostrarSeccion('clientes')">
-    Clientes
-  </button>
+    <button onclick="mostrarSeccion('clientes')">
+        Clientes
+    </button>
 
-  <button onclick="mostrarSeccion('credito')">
-    Crédito
-  </button>
+    <button onclick="mostrarSeccion('credito')">
+        Crédito
+    </button>
 
-  <button onclick="mostrarSeccion('listaCreditos')">
-    Créditos Registrados
-  </button>
+    <button onclick="mostrarSeccion('listaCreditos')">
+        Créditos Registrados
+    </button>
 
-  <button onclick="mostrarSeccion('acerca')">
-    Acerca de
-  </button>
+    <button onclick="mostrarSeccion('acerca')">
+        Acerca de
+    </button>
 
 </nav>
 
@@ -51,38 +53,38 @@
 
 <section id="parametros" class="activa">
 
-  <h2>Configurar Parámetros</h2>
+    <h2>Configurar Parámetros</h2>
 
-  <label>Tasa de interés:</label>
+    <label>Tasa de interés:</label>
 
-  <input
-    type="number"
-    id="tasaInteres"
-    min="10"
-    max="20"
-    value="15"
-  >
+    <input
+        type="number"
+        id="tasaInteres"
+        min="10"
+        max="20"
+        value="15"
+    >
 
-  <span>%</span>
+    <span>%</span>
 
-  <br><br>
+    <br><br>
 
-  <label>Monto máximo:</label>
+    <label>Monto máximo:</label>
 
-  <input
-    type="number"
-    id="montoMaximo"
-    placeholder="Ingrese monto máximo"
-    value="10000"
-  >
+    <input
+        type="number"
+        id="montoMaximo"
+        placeholder="Ingrese monto máximo"
+        value="10000"
+    >
 
-  <br>
+    <br><br>
 
-  <button onclick="guardarTasa()">
-    Guardar parámetros
-  </button>
+    <button onclick="guardarTasa()">
+        Guardar parámetros
+    </button>
 
-  <p id="mensajeTasa"></p>
+    <p id="mensajeTasa"></p>
 
 </section>
 
@@ -92,137 +94,141 @@
 
 <section id="clientes">
 
-  <h2>Registro de Clientes</h2>
+    <h2>Registro de Clientes</h2>
 
-  <input
-    type="text"
-    id="txtCedula"
-    placeholder="Ingrese cédula"
-  >
+    <input
+        type="text"
+        id="txtCedula"
+        placeholder="Ingrese cédula"
+    >
 
-  <input
-    type="text"
-    id="txtNombre"
-    placeholder="Ingrese nombre"
-  >
+    <input
+        type="text"
+        id="txtNombre"
+        placeholder="Ingrese nombre"
+    >
 
-  <input
-    type="text"
-    id="txtApellido"
-    placeholder="Ingrese apellido"
-  >
+    <input
+        type="text"
+        id="txtApellido"
+        placeholder="Ingrese apellido"
+    >
 
-  <input
-    type="text"
-    id="txtTelefono"
-    placeholder="Ingrese teléfono"
-  >
+    <input
+        type="text"
+        id="txtTelefono"
+        placeholder="Ingrese teléfono"
+    >
 
-  <input
-    type="email"
-    id="txtCorreo"
-    placeholder="Ingrese correo electrónico"
-  >
+    <input
+        type="email"
+        id="txtCorreo"
+        placeholder="Ingrese correo electrónico"
+    >
 
-  <input
-    type="number"
-    id="txtIngresos"
-    placeholder="Ingrese ingresos"
-  >
+    <input
+        type="number"
+        id="txtIngresos"
+        placeholder="Ingrese ingresos"
+    >
 
-  <input
-    type="number"
-    id="txtEgresos"
-    placeholder="Ingrese egresos"
-  >
+    <input
+        type="number"
+        id="txtEgresos"
+        placeholder="Ingrese egresos"
+    >
 
-  <br>
+    <br><br>
 
-  <button onclick="guardarCliente()">
-    Guardar cliente
-  </button>
+    <button onclick="guardarCliente()">
+        Guardar cliente
+    </button>
 
-  <button onclick="limpiar()">
-    Limpiar
-  </button>
+    <button onclick="limpiar()">
+        Limpiar
+    </button>
 
-  <table>
+    <br><br>
 
-    <thead>
+    <table border="1">
 
-      <tr>
+        <thead>
 
-        <th>Cédula</th>
+            <tr>
 
-        <th>Nombre</th>
+                <th>Cédula</th>
 
-        <th>Apellido</th>
+                <th>Nombre</th>
 
-        <th>Teléfono</th>
+                <th>Apellido</th>
 
-        <th>Correo</th>
+                <th>Teléfono</th>
 
-        <th>Ingresos</th>
+                <th>Correo</th>
 
-        <th>Egresos</th>
+                <th>Ingresos</th>
 
-        <th>Acciones</th>
+                <th>Egresos</th>
 
-      </tr>
+                <th>Acciones</th>
 
-    </thead>
+            </tr>
 
-    <tbody id="tablaClientes">
+        </thead>
 
-    </tbody>
+        <tbody id="tablaClientes">
 
-  </table>
+        </tbody>
+
+    </table>
 
 </section>
 
 
 
-<!-- CREDITOS -->
+<!-- CREDITO -->
 
 <section id="credito">
 
-  <h2>Solicitar Crédito</h2>
+    <h2>Solicitar Crédito</h2>
 
-  <input
-    type="text"
-    id="buscarCedulaCredito"
-    placeholder="Ingrese cédula"
-  >
+    <input
+        type="text"
+        id="buscarCedulaCredito"
+        placeholder="Ingrese cédula"
+    >
 
-  <button>
-    Buscar cliente
-  </button>
+    <button onclick="buscarClienteCredito()">
+        Buscar cliente
+    </button>
 
-  <div id="datosClienteCredito" class="card"></div>
+    <br><br>
 
-  <input
-    type="number"
-    id="montoCredito"
-    placeholder="Monto"
-  >
+    <div id="datosClienteCredito" class="card"></div>
 
-  <input
-    type="number"
-    id="plazoCredito"
-    placeholder="Plazo"
-  >
+    <br>
 
-  <br>
+    <input
+        type="number"
+        id="montoCredito"
+        placeholder="Monto del crédito"
+    >
 
-  <button>
-    Calcular crédito
-  </button>
+    <input
+        type="number"
+        id="plazoCredito"
+        placeholder="Plazo en meses"
+    >
 
-  <div id="resultadoCredito"></div>
+    <br><br>
 
-  <button id="btnSolicitarCredito" disabled>
-    Solicitar crédito
-  </button>
+    <button onclick="calcularCredito()">
+        Calcular crédito
+    </button>
+
+    <br><br>
+
+    <div id="resultadoCredito"></div>
 
 </section>
 
@@ -232,157 +238,159 @@
 
 <section id="listaCreditos">
 
-  <h2>Créditos Registrados</h2>
+    <h2>Créditos Registrados</h2>
 
-  <input
-    type="text"
-    id="buscarCedulaListado"
-    placeholder="Buscar por cédula"
-  >
+    <input
+        type="text"
+        id="buscarCedulaListado"
+        placeholder="Buscar por cédula"
+    >
 
-  <button>
-    Buscar
-  </button>
+    <button>
+        Buscar
+    </button>
 
-  <button>
-    Ver todos
-  </button>
+    <button>
+        Ver todos
+    </button>
 
-  <hr>
+    <hr>
 
-  <h3>Crédito VIP</h3>
+    <h3>Crédito VIP</h3>
 
-  <input
-    type="text"
-    id="vipCedula"
-    placeholder="Cédula"
-  >
+    <input
+        type="text"
+        id="vipCedula"
+        placeholder="Cédula"
+    >
 
-  <input
-    type="text"
-    id="vipNombre"
-    placeholder="Nombre"
-  >
+    <input
+        type="text"
+        id="vipNombre"
+        placeholder="Nombre"
+    >
 
-  <input
-    type="text"
-    id="vipApellido"
-    placeholder="Apellido"
-  >
+    <input
+        type="text"
+        id="vipApellido"
+        placeholder="Apellido"
+    >
 
-  <input
-    type="number"
-    id="vipMonto"
-    placeholder="Monto"
-  >
+    <input
+        type="number"
+        id="vipMonto"
+        placeholder="Monto"
+    >
 
-  <input
-    type="number"
-    id="vipTasa"
-    placeholder="Tasa"
-  >
+    <input
+        type="number"
+        id="vipTasa"
+        placeholder="Tasa"
+    >
 
-  <input
-    type="number"
-    id="vipPlazo"
-    placeholder="Plazo"
-  >
+    <input
+        type="number"
+        id="vipPlazo"
+        placeholder="Plazo"
+    >
 
-  <input
-    type="number"
-    id="vipCuota"
-    placeholder="Cuota"
-  >
+    <input
+        type="number"
+        id="vipCuota"
+        placeholder="Cuota"
+    >
 
-  <br>
+    <br><br>
 
-  <button onclick="creditoVIP()">
-    Agregar Crédito VIP
-  </button>
+    <button onclick="creditoVIP()">
+        Agregar Crédito VIP
+    </button>
 
-  <table>
+    <br><br>
 
-    <thead>
+    <table border="1">
 
-      <tr>
+        <thead>
 
-        <th>Cédula</th>
+            <tr>
 
-        <th>Nombre</th>
+                <th>Cédula</th>
 
-        <th>Apellido</th>
+                <th>Nombre</th>
 
-        <th>Monto</th>
+                <th>Apellido</th>
 
-        <th>Tasa</th>
+                <th>Monto</th>
 
-        <th>Plazo</th>
+                <th>Tasa</th>
 
-        <th>Cuota</th>
+                <th>Plazo</th>
 
-      </tr>
+                <th>Cuota</th>
 
-    </thead>
+            </tr>
 
-    <tbody id="tablaCreditos">
+        </thead>
 
-      <tr>
+        <tbody id="tablaCreditos">
 
-        <td>1712345678</td>
+            <tr>
 
-        <td>Juan</td>
+                <td>1712345678</td>
 
-        <td>Pérez</td>
+                <td>Juan</td>
 
-        <td>3000</td>
+                <td>Pérez</td>
 
-        <td>15%</td>
+                <td>3000</td>
 
-        <td>12 meses</td>
+                <td>15%</td>
 
-        <td>287.50</td>
+                <td>12 meses</td>
 
-      </tr>
+                <td>287.50</td>
 
-      <tr>
+            </tr>
 
-        <td>1723456789</td>
+            <tr>
 
-        <td>María</td>
+                <td>1723456789</td>
 
-        <td>Gómez</td>
+                <td>María</td>
 
-        <td>5000</td>
+                <td>Gómez</td>
 
-        <td>14%</td>
+                <td>5000</td>
 
-        <td>24 meses</td>
+                <td>14%</td>
 
-        <td>237.50</td>
+                <td>24 meses</td>
 
-      </tr>
+                <td>237.50</td>
 
-      <tr>
+            </tr>
 
-        <td>1734567890</td>
+            <tr>
 
-        <td>Carlos</td>
+                <td>1734567890</td>
 
-        <td>Ramírez</td>
+                <td>Carlos</td>
 
-        <td>1500</td>
+                <td>Ramírez</td>
 
-        <td>16%</td>
+                <td>1500</td>
 
-        <td>6 meses</td>
+                <td>16%</td>
 
-        <td>290.00</td>
+                <td>6 meses</td>
 
-      </tr>
+                <td>290.00</td>
 
-    </tbody>
+            </tr>
 
-  </table>
+        </tbody>
+
+    </table>
 
 </section>
 
@@ -392,29 +400,29 @@
 
 <section id="acerca">
 
-  <h2>Acerca de</h2>
+    <h2>Acerca de</h2>
 
-  <div class="card">
+    <div class="card">
 
-    <h3>Alice Violet</h3>
+        <h3>Alice Violet</h3>
 
-    <p>
-      Desarrolladora del sistema básico de créditos.
-    </p>
+        <p>
+            Desarrolladora del sistema básico de créditos.
+        </p>
 
-    <p>
-      Apellido: Violet
-    </p>
+        <p>
+            Apellido: Violet
+        </p>
 
-    <p>
-      Número: 0999999999
-    </p>
+        <p>
+            Número: 0999999999
+        </p>
 
-    <p>
-      “El código también puede tener alma.”
-    </p>
+        <p>
+            “El código también puede tener alma.”
+        </p>
 
-  </div>
+    </div>
 
 </section>
 
