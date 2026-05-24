@@ -8,6 +8,12 @@ let clienteSeleccionado = null;
 
 let clienteCredito = null;
 
+let montoCalculado = 0;
+
+let cuotaCalculada = 0;
+
+let plazoIngresado = 0;
+
 
 
 //====================================
@@ -308,75 +314,6 @@ function limpiar(){
 
 
 //====================================
-// CREDITO VIP
-//====================================
-
-function creditoVIP(){
-
-    let cedula;
-
-    let nombre;
-
-    let apellido;
-
-    let monto;
-
-    let tasa;
-
-    let plazo;
-
-    let cuota;
-
-
-    cedula = recuperaraTexto("vipCedula");
-
-    nombre = recuperaraTexto("vipNombre");
-
-    apellido = recuperaraTexto("vipApellido");
-
-    monto = recuperarFloat("vipMonto");
-
-    tasa = recuperarFloat("vipTasa");
-
-    plazo = recuperarFloat("vipPlazo");
-
-    cuota = recuperarFloat("vipCuota");
-
-
-    let tabla;
-
-    tabla = document.getElementById("tablaCreditos");
-
-
-    tabla.innerHTML +=
-    `
-    <tr>
-
-        <td>${cedula}</td>
-
-        <td>${nombre}</td>
-
-        <td>${apellido}</td>
-
-        <td>${monto}</td>
-
-        <td>${tasa}%</td>
-
-        <td>${plazo} meses</td>
-
-        <td>${cuota}</td>
-
-    </tr>
-    `;
-
-
-    alert("Crédito VIP agregado correctamente");
-
-}
-
-
-
-//====================================
 // BUSCAR CLIENTE CREDITO
 //====================================
 
@@ -457,6 +394,10 @@ function calcularCredito(){
 
     plazo = recuperarInt("plazoCredito");
 
+    montoCalculado = monto;
+
+    plazoIngresado = plazo;
+
 
     let capacidadPago;
 
@@ -482,6 +423,8 @@ function calcularCredito(){
     cuotaMensual =
     totalPagar / plazo;
 
+    cuotaCalculada = cuotaMensual;
+
 
     let resultado;
 
@@ -497,11 +440,19 @@ function calcularCredito(){
 
         componenteResultado.className = "aprobado";
 
+        document.getElementById(
+            "btnAsignarCredito"
+        ).disabled = false;
+
     }else{
 
         resultado = "RECHAZADO";
 
         componenteResultado.className = "rechazado";
+
+        document.getElementById(
+            "btnAsignarCredito"
+        ).disabled = true;
 
     }
 
@@ -525,5 +476,204 @@ function calcularCredito(){
     RESULTADO:
     ${resultado}
     `;
+
+}
+
+
+
+//====================================
+// ASIGNAR CREDITO
+//====================================
+
+function asignarCredito(){
+
+    let credito = {
+
+        cedula: clienteCredito.cedula,
+
+        nombre: clienteCredito.nombre,
+
+        apellido: clienteCredito.apellido,
+
+        monto: montoCalculado,
+
+        tasa: tasaInteres,
+
+        plazo: plazoIngresado,
+
+        cuota: cuotaCalculada
+
+    };
+
+
+    creditos.push(credito);
+
+    alert("Crédito asignado correctamente");
+
+}
+
+
+
+//====================================
+// BUSCAR CREDITOS
+//====================================
+
+function buscarCreditos(cedula){
+
+    let creditosEncontrados = [];
+
+    let credito;
+
+
+    for(let i = 0; i < creditos.length; i++){
+
+        credito = creditos[i];
+
+
+        if(credito.cedula == cedula){
+
+            creditosEncontrados.push(credito);
+
+        }
+
+    }
+
+
+    return creditosEncontrados;
+
+}
+
+
+
+//====================================
+// PINTAR CREDITOS
+//====================================
+
+function pintarCreditos(creditosPintar){
+
+    let tabla;
+
+    tabla = document.getElementById("tablaCreditos");
+
+    tabla.innerHTML = "";
+
+
+    let credito;
+
+
+    for(let i = 0; i < creditosPintar.length; i++){
+
+        credito = creditosPintar[i];
+
+
+        tabla.innerHTML +=
+        `
+        <tr>
+
+            <td>${credito.cedula}</td>
+
+            <td>${credito.nombre}</td>
+
+            <td>${credito.apellido}</td>
+
+            <td>${credito.monto}</td>
+
+            <td>${credito.tasa}%</td>
+
+            <td>${credito.plazo} meses</td>
+
+            <td>${credito.cuota.toFixed(2)}</td>
+
+        </tr>
+        `;
+    }
+
+}
+
+
+
+//====================================
+// BUSCAR CREDITOS CLIENTE
+//====================================
+
+function buscarCreditosCliente(){
+
+    let cedula;
+
+    cedula = recuperaraTexto(
+        "buscarCedulaListado"
+    );
+
+
+    let creditosCliente;
+
+    creditosCliente =
+    buscarCreditos(cedula);
+
+
+    pintarCreditos(creditosCliente);
+
+}
+
+
+
+//====================================
+// CREDITO VIP
+//====================================
+
+function creditoVIP(){
+
+    let cedula;
+
+    let nombre;
+
+    let apellido;
+
+    let monto;
+
+    let tasa;
+
+    let plazo;
+
+    let cuota;
+
+
+    cedula = recuperaraTexto("vipCedula");
+
+    nombre = recuperaraTexto("vipNombre");
+
+    apellido = recuperaraTexto("vipApellido");
+
+    monto = recuperarFloat("vipMonto");
+
+    tasa = recuperarFloat("vipTasa");
+
+    plazo = recuperarFloat("vipPlazo");
+
+    cuota = recuperarFloat("vipCuota");
+
+
+    let credito = {
+
+        cedula: cedula,
+
+        nombre: nombre,
+
+        apellido: apellido,
+
+        monto: monto,
+
+        tasa: tasa,
+
+        plazo: plazo,
+
+        cuota: cuota
+
+    };
+
+
+    creditos.push(credito);
+
+    pintarCreditos(creditos);
 
 }
