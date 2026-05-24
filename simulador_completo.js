@@ -4,17 +4,9 @@ let creditos = [];
 
 let tasaInteres = 15;
 
-let clienteSeleccionado = null;
+let montoMaximoGlobal = 10000;
 
 let clienteCredito = null;
-
-let montoCalculado = 0;
-
-let cuotaCalculada = 0;
-
-let plazoIngresado = 0;
-
-
 
 //====================================
 // NAVEGACION
@@ -22,69 +14,46 @@ let plazoIngresado = 0;
 
 function ocultarSecciones(){
 
-    document.getElementById("parametros").classList.remove("activa");
+    document.getElementById("parametros").style.display = "none";
 
-    document.getElementById("clientes").classList.remove("activa");
+    document.getElementById("clientes").style.display = "none";
 
-    document.getElementById("credito").classList.remove("activa");
+    document.getElementById("creditos").style.display = "none";
 
-    document.getElementById("listaCreditos").classList.remove("activa");
+    document.getElementById("listaCreditos").style.display = "none";
 
-    document.getElementById("acerca").classList.remove("activa");
+    document.getElementById("creditosVIP").style.display = "none";
+
+    document.getElementById("acercaDe").style.display = "none";
 
 }
-
-
 
 function mostrarSeccion(id){
 
     ocultarSecciones();
 
-    document.getElementById(id).classList.add("activa");
+    document.getElementById(id).style.display = "block";
 
 }
 
-
-
 //====================================
-// GUARDAR TASA
+// GUARDAR PARAMETROS
 //====================================
 
 function guardarTasa(){
 
-    let tasa;
+    tasaInteres = parseFloat(
+        document.getElementById("tasaInteres").value
+    );
 
-    let montoMaximo;
+    montoMaximoGlobal = parseFloat(
+        document.getElementById("montoMaximo").value
+    );
 
-    tasa = recuperarInt("tasaInteres");
-
-    montoMaximo = recuperarFloat("montoMaximo");
-
-
-    if(tasa >= 10 && tasa <= 20){
-
-        tasaInteres = tasa;
-
-        mostrarTexto(
-            "mensajeTasa",
-            "Parámetros guardados correctamente | Tasa: "
-            + tasa +
-            "% | Monto máximo: $" +
-            montoMaximo
-        );
-
-    }else{
-
-        mostrarTexto(
-            "mensajeTasa",
-            "La tasa debe estar entre 10% y 20%"
-        );
-
-    }
+    document.getElementById("mensajeTasa").innerHTML =
+    "Parámetros guardados correctamente";
 
 }
-
-
 
 //====================================
 // GUARDAR CLIENTE
@@ -92,87 +61,52 @@ function guardarTasa(){
 
 function guardarCliente(){
 
-    let cedula;
+    let cedula =
+    document.getElementById("cedula").value;
 
-    let nombre;
+    let nombre =
+    document.getElementById("nombre").value;
 
-    let apellido;
+    let apellido =
+    document.getElementById("apellido").value;
 
-    let telefono;
+    let telefono =
+    document.getElementById("telefono").value;
 
-    let correo;
+    let email =
+    document.getElementById("email").value;
 
-    let ingresos;
+    let ingresos =
+    parseFloat(document.getElementById("ingresos").value);
 
-    let egresos;
+    let egresos =
+    parseFloat(document.getElementById("egresos").value);
 
+    let cliente = {
 
-    cedula = recuperaraTexto("txtCedula");
+        cedula: cedula,
 
-    nombre = recuperaraTexto("txtNombre");
+        nombre: nombre,
 
-    apellido = recuperaraTexto("txtApellido");
+        apellido: apellido,
 
-    telefono = recuperaraTexto("txtTelefono");
+        telefono: telefono,
 
-    correo = recuperaraTexto("txtCorreo");
+        email: email,
 
-    ingresos = recuperarFloat("txtIngresos");
+        ingresos: ingresos,
 
-    egresos = recuperarFloat("txtEgresos");
+        egresos: egresos
 
+    };
 
-    let clienteEncontrado;
-
-    clienteEncontrado = buscarCliente(cedula);
-
-
-    if(clienteEncontrado == null){
-
-        let cliente = {
-
-            cedula: cedula,
-
-            nombre: nombre,
-
-            apellido: apellido,
-
-            telefono: telefono,
-
-            correo: correo,
-
-            ingresos: ingresos,
-
-            egresos: egresos
-
-        };
-
-        clientes.push(cliente);
-
-    }else{
-
-        clienteEncontrado.nombre = nombre;
-
-        clienteEncontrado.apellido = apellido;
-
-        clienteEncontrado.telefono = telefono;
-
-        clienteEncontrado.correo = correo;
-
-        clienteEncontrado.ingresos = ingresos;
-
-        clienteEncontrado.egresos = egresos;
-
-    }
-
+    clientes.push(cliente);
 
     pintarClientes();
 
-    limpiar();
+    limpiarFormulario();
 
 }
-
-
 
 //====================================
 // PINTAR CLIENTES
@@ -180,20 +114,14 @@ function guardarCliente(){
 
 function pintarClientes(){
 
-    let tabla;
-
-    tabla = document.getElementById("tablaClientes");
+    let tabla =
+    document.getElementById("tablaClientes");
 
     tabla.innerHTML = "";
 
-
-    let cliente;
-
-
     for(let i = 0; i < clientes.length; i++){
 
-        cliente = clientes[i];
-
+        let cliente = clientes[i];
 
         tabla.innerHTML +=
         `
@@ -207,7 +135,7 @@ function pintarClientes(){
 
             <td>${cliente.telefono}</td>
 
-            <td>${cliente.correo}</td>
+            <td>${cliente.email}</td>
 
             <td>${cliente.ingresos}</td>
 
@@ -215,8 +143,8 @@ function pintarClientes(){
 
             <td>
 
-                <button onclick="seleccionarCliente('${cliente.cedula}')">
-                    Actualizar
+                <button onclick="eliminarCliente(${i})">
+                    Eliminar
                 </button>
 
             </td>
@@ -227,91 +155,39 @@ function pintarClientes(){
 
 }
 
-
-
 //====================================
-// BUSCAR CLIENTE
+// ELIMINAR CLIENTE
 //====================================
 
-function buscarCliente(cedula){
+function eliminarCliente(posicion){
 
-    let cliente;
+    clientes.splice(posicion, 1);
 
-
-    for(let i = 0; i < clientes.length; i++){
-
-        cliente = clientes[i];
-
-
-        if(cliente.cedula == cedula){
-
-            return cliente;
-
-        }
-
-    }
-
-
-    return null;
+    pintarClientes();
 
 }
 
-
-
 //====================================
-// SELECCIONAR CLIENTE
+// LIMPIAR FORMULARIO
 //====================================
 
-function seleccionarCliente(cedula){
+function limpiarFormulario(){
 
-    let cliente;
+    document.getElementById("cedula").value = "";
 
-    cliente = buscarCliente(cedula);
+    document.getElementById("nombre").value = "";
 
-    clienteSeleccionado = cliente;
+    document.getElementById("apellido").value = "";
 
+    document.getElementById("telefono").value = "";
 
-    mostrarTextoEnCaja("txtCedula", cliente.cedula);
+    document.getElementById("email").value = "";
 
-    mostrarTextoEnCaja("txtNombre", cliente.nombre);
+    document.getElementById("ingresos").value = "";
 
-    mostrarTextoEnCaja("txtApellido", cliente.apellido);
-
-    mostrarTextoEnCaja("txtTelefono", cliente.telefono);
-
-    mostrarTextoEnCaja("txtCorreo", cliente.correo);
-
-    mostrarTextoEnCaja("txtIngresos", cliente.ingresos);
-
-    mostrarTextoEnCaja("txtEgresos", cliente.egresos);
+    document.getElementById("egresos").value = "";
 
 }
-
-
-
-//====================================
-// LIMPIAR
-//====================================
-
-function limpiar(){
-
-    mostrarTextoEnCaja("txtCedula", "");
-
-    mostrarTextoEnCaja("txtNombre", "");
-
-    mostrarTextoEnCaja("txtApellido", "");
-
-    mostrarTextoEnCaja("txtTelefono", "");
-
-    mostrarTextoEnCaja("txtCorreo", "");
-
-    mostrarTextoEnCaja("txtIngresos", "");
-
-    mostrarTextoEnCaja("txtEgresos", "");
-
-}
-
-
 
 //====================================
 // BUSCAR CLIENTE CREDITO
@@ -319,57 +195,46 @@ function limpiar(){
 
 function buscarClienteCredito(){
 
-    let cedula;
+    let cedula =
+    document.getElementById("buscarCedulaCredito").value;
 
-    cedula = recuperaraTexto("buscarCedulaCredito");
+    let encontrado = null;
 
+    for(let i = 0; i < clientes.length; i++){
 
-    let cliente;
+        if(clientes[i].cedula == cedula){
 
-    cliente = buscarCliente(cedula);
+            encontrado = clientes[i];
 
-
-    let componente;
-
-    componente = document.getElementById("datosClienteCredito");
-
-
-    if(cliente == null){
-
-        componente.innerHTML =
-        `
-        <h3>Cliente no encontrado</h3>
-        `;
-
-        clienteCredito = null;
-
-    }else{
-
-        clienteCredito = cliente;
-
-        componente.innerHTML =
-        `
-        <h3>Datos del Cliente</h3>
-
-        <p><strong>Cédula:</strong> ${cliente.cedula}</p>
-
-        <p><strong>Nombre:</strong> ${cliente.nombre}</p>
-
-        <p><strong>Apellido:</strong> ${cliente.apellido}</p>
-
-        <p><strong>Teléfono:</strong> ${cliente.telefono}</p>
-
-        <p><strong>Correo:</strong> ${cliente.correo}</p>
-
-        <p><strong>Ingresos:</strong> $${cliente.ingresos}</p>
-
-        <p><strong>Egresos:</strong> $${cliente.egresos}</p>
-        `;
+            break;
+        }
     }
 
+    if(encontrado == null){
+
+        alert("Cliente no encontrado");
+
+        return;
+    }
+
+    clienteCredito = encontrado;
+
+    document.getElementById("datosClienteCredito").innerHTML =
+    `
+    <p><strong>Cliente:</strong> ${encontrado.nombre} ${encontrado.apellido}</p>
+
+    <p><strong>Teléfono:</strong> ${encontrado.telefono}</p>
+
+    <p><strong>Email:</strong> ${encontrado.email}</p>
+    `;
+
+    document.getElementById("montoCredito").disabled = false;
+
+    document.getElementById("plazoCredito").disabled = false;
+
+    document.getElementById("btnCalcular").disabled = false;
+
 }
-
-
 
 //====================================
 // CALCULAR CREDITO
@@ -377,115 +242,63 @@ function buscarClienteCredito(){
 
 function calcularCredito(){
 
-    if(clienteCredito == null){
+    let monto =
+    parseFloat(document.getElementById("montoCredito").value);
 
-        alert("Primero debe buscar un cliente");
+    let plazo =
+    parseInt(document.getElementById("plazoCredito").value);
+
+    if(monto > montoMaximoGlobal){
+
+        alert("El monto supera el máximo permitido");
+
+        document.getElementById("montoCredito").value = "";
 
         return;
-
     }
 
-
-    let monto;
-
-    let plazo;
-
-    monto = recuperarFloat("montoCredito");
-
-    plazo = recuperarInt("plazoCredito");
-
-    montoCalculado = monto;
-
-    plazoIngresado = plazo;
-
-
-    let capacidadPago;
-
-    capacidadPago =
-    clienteCredito.ingresos
-    - clienteCredito.egresos;
-
-
-    let interes;
-
-    interes =
+    let interes =
     monto * (tasaInteres / 100);
 
-
-    let totalPagar;
-
-    totalPagar =
+    let total =
     monto + interes;
 
+    let cuota =
+    total / plazo;
 
-    let cuotaMensual;
-
-    cuotaMensual =
-    totalPagar / plazo;
-
-    cuotaCalculada = cuotaMensual;
-
-
-    let resultado;
-
-    let componenteResultado;
-
-    componenteResultado =
-    document.getElementById("resultadoCredito");
-
-
-    if(cuotaMensual <= capacidadPago){
-
-        resultado = "APROBADO";
-
-        componenteResultado.className = "aprobado";
-
-        document.getElementById(
-            "btnAsignarCredito"
-        ).disabled = false;
-
-    }else{
-
-        resultado = "RECHAZADO";
-
-        componenteResultado.className = "rechazado";
-
-        document.getElementById(
-            "btnAsignarCredito"
-        ).disabled = true;
-
-    }
-
-
-    componenteResultado.innerHTML =
+    document.getElementById("resultadoCredito").innerHTML =
     `
     <h3>Resultado del Crédito</h3>
 
-    Capacidad de pago:
-    $${capacidadPago}
-    <br><br>
+    <p>Total a pagar: $${total.toFixed(2)}</p>
 
-    Total a pagar:
-    $${totalPagar.toFixed(2)}
-    <br><br>
-
-    Cuota mensual:
-    $${cuotaMensual.toFixed(2)}
-    <br><br>
-
-    RESULTADO:
-    ${resultado}
+    <p>Cuota mensual: $${cuota.toFixed(2)}</p>
     `;
 
+    document.getElementById("btnSolicitarCredito").disabled = false;
+
 }
-
-
 
 //====================================
 // ASIGNAR CREDITO
 //====================================
 
 function asignarCredito(){
+
+    let monto =
+    parseFloat(document.getElementById("montoCredito").value);
+
+    let plazo =
+    parseInt(document.getElementById("plazoCredito").value);
+
+    let interes =
+    monto * (tasaInteres / 100);
+
+    let total =
+    monto + interes;
+
+    let cuota =
+    total / plazo;
 
     let credito = {
 
@@ -495,76 +308,38 @@ function asignarCredito(){
 
         apellido: clienteCredito.apellido,
 
-        monto: montoCalculado,
+        monto: monto,
 
         tasa: tasaInteres,
 
-        plazo: plazoIngresado,
+        plazo: plazo,
 
-        cuota: cuotaCalculada
+        cuota: cuota.toFixed(2)
 
     };
 
-
     creditos.push(credito);
 
-    alert("Crédito asignado correctamente");
+    pintarCreditos(creditos);
+
+    alert("Crédito registrado correctamente");
 
 }
-
-
-
-//====================================
-// BUSCAR CREDITOS
-//====================================
-
-function buscarCreditos(cedula){
-
-    let creditosEncontrados = [];
-
-    let credito;
-
-
-    for(let i = 0; i < creditos.length; i++){
-
-        credito = creditos[i];
-
-
-        if(credito.cedula == cedula){
-
-            creditosEncontrados.push(credito);
-
-        }
-
-    }
-
-
-    return creditosEncontrados;
-
-}
-
-
 
 //====================================
 // PINTAR CREDITOS
 //====================================
 
-function pintarCreditos(creditosPintar){
+function pintarCreditos(lista){
 
-    let tabla;
-
-    tabla = document.getElementById("tablaCreditos");
+    let tabla =
+    document.getElementById("tablaCreditos");
 
     tabla.innerHTML = "";
 
+    for(let i = 0; i < lista.length; i++){
 
-    let credito;
-
-
-    for(let i = 0; i < creditosPintar.length; i++){
-
-        credito = creditosPintar[i];
-
+        let credito = lista[i];
 
         tabla.innerHTML +=
         `
@@ -582,7 +357,7 @@ function pintarCreditos(creditosPintar){
 
             <td>${credito.plazo} meses</td>
 
-            <td>${credito.cuota.toFixed(2)}</td>
+            <td>${credito.cuota}</td>
 
         </tr>
         `;
@@ -590,90 +365,75 @@ function pintarCreditos(creditosPintar){
 
 }
 
-
-
 //====================================
 // BUSCAR CREDITOS CLIENTE
 //====================================
 
 function buscarCreditosCliente(){
 
-    let cedula;
+    let cedula =
+    document.getElementById("buscarCedulaListado").value;
 
-    cedula = recuperaraTexto(
-        "buscarCedulaListado"
-    );
+    let lista = [];
 
+    for(let i = 0; i < creditos.length; i++){
 
-    let creditosCliente;
+        if(creditos[i].cedula == cedula){
 
-    creditosCliente =
-    buscarCreditos(cedula);
+            lista.push(creditos[i]);
+        }
+    }
 
+    pintarCreditos(lista);
 
-    pintarCreditos(creditosCliente);
+}
+
+//====================================
+// CREDITOS VIP
+//====================================
+
+function pintarCreditosVIP(creditos){
+
+    let tabla =
+    document.getElementById("tablaCreditosVIP");
+
+    tabla.innerHTML = "";
+
+    for(let i = 0; i < creditos.length; i++){
+
+        let credito = creditos[i];
+
+        if(credito.monto > 5000){
+
+            tabla.innerHTML +=
+            `
+            <tr>
+
+                <td>${credito.cedula}</td>
+
+                <td>${credito.nombre}</td>
+
+                <td>${credito.apellido}</td>
+
+                <td>${credito.monto}</td>
+
+                <td>${credito.tasa}%</td>
+
+                <td>${credito.plazo} meses</td>
+
+                <td>${credito.cuota}</td>
+
+            </tr>
+            `;
+        }
+    }
 
 }
 
-
-
 //====================================
-// CREDITO VIP
+// INICIO
 //====================================
 
-function creditoVIP(){
+ocultarSecciones();
 
-    let cedula;
-
-    let nombre;
-
-    let apellido;
-
-    let monto;
-
-    let tasa;
-
-    let plazo;
-
-    let cuota;
-
-
-    cedula = recuperaraTexto("vipCedula");
-
-    nombre = recuperaraTexto("vipNombre");
-
-    apellido = recuperaraTexto("vipApellido");
-
-    monto = recuperarFloat("vipMonto");
-
-    tasa = recuperarFloat("vipTasa");
-
-    plazo = recuperarFloat("vipPlazo");
-
-    cuota = recuperarFloat("vipCuota");
-
-
-    let credito = {
-
-        cedula: cedula,
-
-        nombre: nombre,
-
-        apellido: apellido,
-
-        monto: monto,
-
-        tasa: tasa,
-
-        plazo: plazo,
-
-        cuota: cuota
-
-    };
-
-
-    creditos.push(credito);
-
-    pintarCreditos(creditos);
-
-}
+mostrarSeccion("parametros");
